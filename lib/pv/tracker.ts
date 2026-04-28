@@ -7,7 +7,12 @@ import path from "node:path";
 // 保存形式: { events: [{ ticker, ts }, ...] } を JSON で保持。
 // 7日より古いイベントは自動削除し、ファイルサイズが膨れないようにする。
 
-const PV_FILE = path.join(process.cwd(), "data", "cache", "page_views.json");
+// Vercel/AWS Lambda 等のサーバーレス環境では /tmp のみ書き込み可能。
+// /tmp はインスタンス間で共有されず揮発するため、PV 集計は近似値になる
+// （Phase 2 で Supabase に移行予定）。ローカル開発では従来どおり data/cache/。
+const PV_FILE = process.env.VERCEL
+  ? "/tmp/us-stocks-cache/page_views.json"
+  : path.join(process.cwd(), "data", "cache", "page_views.json");
 const RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
 
 type PvEvent = { ticker: string; ts: number };

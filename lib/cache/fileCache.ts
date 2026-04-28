@@ -1,7 +1,12 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-const CACHE_ROOT = path.join(process.cwd(), "data", "cache");
+// Vercel/AWS Lambda などのサーバーレス環境では project ディレクトリは Read-Only。
+// 書き込み可能な /tmp にフォールバックする。/tmp は Lambda インスタンス間では
+// 共有されず、コールドスタートで揮発するが、ウォーム間ではキャッシュとして機能する。
+const CACHE_ROOT = process.env.VERCEL
+  ? "/tmp/us-stocks-cache"
+  : path.join(process.cwd(), "data", "cache");
 
 type CacheEntry<T> = {
   expiresAt: number;
