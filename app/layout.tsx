@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "米国株まとめ | SEC EDGAR 日本語ビューア",
   description:
-    "SEC EDGAR の米国株フィリングと Polygon.io の株価データを集約した情報サイト。ティッカー検索、TradingViewチャート、各種ランキング、8-K速報、決算カレンダー、インサイダー取引情報。",
+    "SEC EDGAR の米国株フィリングを日本語で読みやすく集約。お気に入りダッシュボード、TradingView チャート、8-K速報、決算カレンダー、インサイダー取引、銘柄比較。商用APIに依存しない無料公開サイトです。",
 };
 
 export default function RootLayout({
@@ -25,8 +25,11 @@ export default function RootLayout({
               <Link href="/" className="hover:text-slate-900">
                 ホーム
               </Link>
+              <Link href="/dashboard" className="hover:text-slate-900">
+                ダッシュボード
+              </Link>
               <Link href="/rankings" className="hover:text-slate-900">
-                ランキング
+                市場ヒートマップ
               </Link>
               <Link href="/news" className="hover:text-slate-900">
                 8-K速報
@@ -47,25 +50,16 @@ export default function RootLayout({
         <footer className="mt-16 border-t border-slate-200 bg-white">
           <div className="mx-auto max-w-5xl px-4 py-6 text-xs text-slate-500">
             <p>
-              データソース: SEC EDGAR (
+              データソース: フィリング・ファンダメンタルは{" "}
               <a
                 href="https://www.sec.gov/edgar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline"
               >
-                公式
+                SEC EDGAR
               </a>
-              ) ／ 株価・出来高・時価総額:
-              <a
-                href="https://polygon.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline"
-              >
-                Polygon.io
-              </a>
-              ／ チャート:
+              （米国SEC公開データ／パブリックドメイン）／ 株価チャート・ヒートマップは{" "}
               <a
                 href="https://jp.tradingview.com/"
                 target="_blank"
@@ -74,9 +68,10 @@ export default function RootLayout({
               >
                 TradingView
               </a>
+              {" "}提供の埋め込みウィジェット
             </p>
             <p className="mt-1">
-              当サイトは情報提供を目的とし、投資勧誘・助言を行うものではありません。
+              当サイトは情報提供を目的とし、投資勧誘・助言を行うものではありません。商用 API による株価データの再配信は行っていません。
             </p>
           </div>
         </footer>

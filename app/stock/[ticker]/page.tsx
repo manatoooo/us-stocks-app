@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import { FilingList } from "@/components/FilingList";
+import { FundamentalsView } from "@/components/Fundamentals";
 import { PvTracker } from "@/components/PvTracker";
 import { TradingViewChart } from "@/components/TradingViewChart";
 import { findByTicker, getCompanyInfo } from "@/lib/edgar/client";
@@ -24,26 +26,58 @@ export default async function StockPage({
   return (
     <div className="space-y-8">
       <PvTracker ticker={entry.ticker} />
-      <header className="space-y-1">
-        <div className="flex items-center gap-3">
+      <header className="space-y-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span className="rounded bg-slate-900 px-2 py-1 font-mono text-sm text-white">
             {entry.ticker}
           </span>
           <h1 className="text-xl font-semibold tracking-tight">{info.name}</h1>
+          <FavoriteButton ticker={entry.ticker} />
         </div>
         <p className="text-sm text-slate-500">
           {info.sicDescription ?? "—"} ／ {info.exchange ?? "—"} ／ CIK {info.cik}
         </p>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <a
+            href={`https://news.google.com/search?q=${encodeURIComponent(`${entry.ticker} stock`)}&hl=ja`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded border border-slate-300 px-2 py-1 text-slate-700 hover:border-slate-500"
+          >
+            Googleニュース ↗
+          </a>
+          <a
+            href={`https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${info.cik}&type=&dateb=&owner=include&count=40`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded border border-slate-300 px-2 py-1 text-slate-700 hover:border-slate-500"
+          >
+            SEC EDGAR ↗
+          </a>
+          <Link
+            href="/dashboard"
+            className="rounded border border-slate-300 px-2 py-1 text-slate-700 hover:border-slate-500"
+          >
+            ダッシュボードへ
+          </Link>
+        </div>
       </header>
 
       <section className="rounded-md border border-slate-200 bg-white p-4">
         <h2 className="mb-3 text-base font-semibold text-slate-800">
           株価チャート
           <span className="ml-2 text-xs font-normal text-slate-400">
-            (TradingView, 15分遅延)
+            (TradingView提供, 米国株は約15分遅延)
           </span>
         </h2>
         <TradingViewChart ticker={entry.ticker} exchange={exchange} />
+      </section>
+
+      <section>
+        <h2 className="mb-3 text-base font-semibold text-slate-800">
+          ファンダメンタル
+        </h2>
+        <FundamentalsView cik={info.cik} />
       </section>
 
       <section>

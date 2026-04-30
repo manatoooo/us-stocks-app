@@ -1,7 +1,7 @@
 import { mapWithConcurrency } from "@/lib/concurrency";
 import { findByTicker, getCompanyInfo } from "@/lib/edgar/client";
 import type { Filing } from "@/lib/edgar/types";
-import { SEED_TICKERS } from "@/lib/rankings/seed";
+import { SEED_TICKERS } from "@/lib/feeds/seed";
 
 export type EnrichedFiling = Filing & {
   ticker: string;
